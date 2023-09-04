@@ -619,3 +619,75 @@ public void setNome(String nome) {
 Observe que, a descrição do nosso atributo nome é igual a descrição do parâmetro, logo, utilizamos mais uma palavra
 reservada this para distinguir um do outro.
 ````
+
+## Aula 06
+### Construtores
+
+Aprendemos que as classes são definições estruturais e comportamentais dos objetos que existirão de suas diretrizes,
+exemplo:
+
+Quando criamos um objeto a partir das definições de uma respectiva denominamos que estamos construindo este objeto
+através do recurso de construtor padrão na linguagem Java.
+
+Vamos imaginar que tem a classe Pessoa onde a mesma determina que cada objeto criado terá as características: Nome,
+Data Nascimento, Endereço e Telefone:
+
+#### Definindo a classe Pessoa:
+
+```java
+import java.util.Date;
+
+public class Pessoa {
+    String nome;
+    Date dataNascimento;
+    String endereco;
+    Long telefone;
+}
+```
+#### Criando três pessoas com o que denominamos de `construtor padrão`:
+```java
+public class ConstrutorPessoa {
+    public static void main(String[] args) {
+        Pessoa carlos   = new Pessoa();
+        Pessoa lucas    = new Pessoa();
+        Pessoa diego    = new Pessoa();
+        
+        //Existem 3 pessoas no sistema sem nenhuma característica
+    }
+}
+```
+Agora, iremos dizer que nosso contrato (classe) que para uma pessoa existir o nome deverá ser obrigatório no ato da
+construção deste objeto.
+```java
+public class Pessoa {
+    String nome;
+    Date dataNascimento;
+    String endereco;
+    Long telefone;
+    
+    // se o nome do parametro for igual, use a palavra reservada this
+    // this.nome = nome
+    Pessoa (String novoNome){
+        nome = novoNome;
+    }
+}
+```
+> [!WARNING]
+> 🔔 Atenção  
+>
+> A classe ConstrutorPessoa passará a apresentar um erro na tentativa de criar os objetos, vamor corrigir confome 
+> abaixo:
+
+```java
+public class ConstrutorPessoa {
+    public static void main(String[] args) {
+        Pessoa carlos   = new Pessoa("carlos henrique");
+        Pessoa lucas    = new Pessoa("lucas silva");
+        Pessoa diego    = new Pessoa("diego felipe");
+    }
+}
+```
+> [!WARNING]
+> 🚨 Cuidado
+> Não use o recurso de construtores em excesso como forma de abreviar o algorítimo para criação e definições de seus 
+> objetos.
