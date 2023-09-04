@@ -1,6 +1,7 @@
 # Programação Orientada a Objetos
 
-## Orientação a Objetos
+## Aula 01
+### Orientação a Objetos
 
 Você já ouviu falar a expressão, linguagem de baixo e de alto nível?
 
@@ -77,8 +78,8 @@ Objeto.
 > Enquanto a programação estruturada é voltada a procedimentos e funções definidas pelo usuário, a programação orientada
 > a objetos é voltada a conceitos, como o de classes e objetos.
 
-
-## Classes e Objetos
+## Aula 02
+### Classes e Objetos
 
 Para compreendermos exatamente do que se trata a orientação a objetos, vamos entender quais são os requerimentos de uma
 linguagem para ser considerada nesse paradigma. Para isso, a linguagem precisa atender sobre o conceito de classes e os
@@ -259,3 +260,268 @@ bibliotecas e as classes do nosso projeto. Logo, existe uma enorme possibilidade
 
 Um exemplo clássico é, a existência das classes **java.sql.Date** e **java.util.Date** da própria linguagem, recomendo
 você leitor, pesquisar sobre a diferença das duas classes.
+
+## Aula 04
+### Modificadores
+
+Em Java, utilizamos três palavras reservadas e um conceito default (sem nenhuma palavra reservada) para definir os
+quatro tipo de visibilidade de atributos, métodos e até mesmo classes, no que se refere ao acesso por outras classes.
+Iremos ilustrar do mais visível ao mais restrito tipo de visibilidade nos arquivos em nosso projeto.
+
+Para uma melhor ilustração iremos representar os conceitos de visibilidade de recursos através do contexto em uma
+lanchonete que vende lanche natural e suco.
+
+![img-exemplo-abstração_de_atendimento_de_lanchonete](https://sintaxe.netlify.app/assets/modificadores-1.69c5be68.png)
+
+````
+ℹ️ Informação
+
+Primeiro, iremos criar o pacote lanchonete
+````
+```java
+package lanchonete;
+
+public class Estabelecimento {
+  public static void main(String[] args) {
+    Cozinheiro cozinheiro = new Cozinheiro();
+    //ações que não precisam estarem disponíveis para toda a aplicação
+    cozinheiro.lavarIngredientes();
+    cozinheiro.baterVitaminaLiquidificador();
+    cozinheiro.selecionarIngredientesVitamina();
+    cozinheiro.prepararLanche();
+    cozinheiro.prepararVitamina();
+    cozinheiro.prepararVitamina();
+
+    //ações que estabelecimento precisa ter ciência
+    cozinheiro.adicionarSucoNoBalcao();;
+    cozinheiro.adicionarLancheNoBalcao();
+    cozinheiro.adicionarComboNoBalcao();
+
+    Almoxarife almoxarife = new Almoxarife();
+    //ações que não precisam estarem disponíveis para toda a aplicação
+    almoxarife.controlarEntrada();
+    almoxarife.controlarSaida();
+    //ação que somente o seu pacote cozinha precisa conhecer (default)
+    almoxarife.entregarIngredientes();
+    almoxarife.trocarGas();
+
+    Atendente atendente = new Atendente();
+    atendente.pegarPedidoBalcao();
+    atendente.receberPagamento();
+    atendente.servindoMesa();
+
+    Cliente cliente = new Cliente();
+    cliente.escolherLanche();
+    cliente.fazerPedido();
+    cliente.pagarConta();
+
+    //não deveria, mas o estabelecimento
+    //ainda não definiu normas de atendimento
+    cliente.pegarPedidoBalcao();
+
+    //esta ação é muito sigilosa, qua tal ser privada ?
+    cliente.consultarSaldoAplicativo();
+
+    //já pensou os clientes ouvindo que o gás acabou ?
+    cozinheiro.pedirParaTrocarGas(almoxarife);
+
+  }
+}
+```
+```java
+package lanchonete;
+
+public class Cozinheiro {
+  //pode ser default
+  public void adicionarLancheNoBalcao() {
+    System.out.println("ADICIONANDO LANCHE NATURAL HAMBÚRGUER NO BALCÃO");
+  }
+  //pode ser default
+  public void adicionarSucoNoBalcao() {
+    System.out.println("ADICIONANDO SUCO NO BALCÃO");
+  }
+  //pode ser default
+  public void adicionarComboNoBalcao() {
+    adicionarLancheNoBalcao();
+    adicionarSucoNoBalcao();
+  }
+  //pode ser private
+  public void prepararLanche() {
+    System.out.println("PREPARANDO LANCHE TIPO HAMBÚRGUER");
+  }
+  //pode ser private
+  public void prepararVitamina() {
+    System.out.println("PREPARANDO SUCO");
+  }
+
+  //pode ser private
+  public void prepararCombo() {
+    prepararLanche();
+    prepararVitamina();
+  }
+  //pode ser private
+  public void selecionarIngredientesLanche() {
+    System.out.println("SELECIONADO O PÃO, SALADA, OVO E CARNE");
+  }
+  //pode ser private
+  public void selecionarIngredientesVitamina() {
+    System.out.println("SELECIONADO FRUTA, LEITE E SUCO");
+  }
+  //pode ser private
+  public void lavarIngredientes() {
+    System.out.println("LAVANDO INGREDIENTES");
+  }
+  //pode ser private
+  public void baterVitaminaLiquidificador() {
+    System.out.println("BATENDO VITAMINA NO LIQUIDIFICADOR");
+  }
+  //pode ser private
+  public void fritarIngredientesLanche() {
+    System.out.println("FRITANDO A CARNE E OVO PARA O HAMBÚRGUER");
+  }
+
+  //pode ser default
+  public void pedirParaTrocarGas(Almoxarife meuAmigo) {
+    meuAmigo.trocarGas();
+  }
+  //pode ser default
+  public void pedirIngredientes(Almoxarife almoxarife) {
+    almoxarife.entregarIngredientes();
+  }
+  
+}
+```
+```java
+package lanchonete;
+
+public class Almoxarife {
+  //pode ser private
+  public void controlarEntrada() {
+    System.out.println("CONTROLANDO A ENTRADA DOS ITENS");
+  }
+  //pode ser private
+  public void controlarSaida() {
+    System.out.println("CONTROLANDO A SAIDA DOS ITENS");
+  }
+  //pode ser default
+  public void entregarIngredientes() {
+    System.out.println("ENTREGANDO INGREDIENTES");
+    //...?
+  }
+  //pode ser default
+  public void trocarGas() {
+    System.out.println("ALMOXARIFE TROCANDO O GÁS");
+  }
+}
+```
+```java
+package lanchonete;
+
+public class Atendente {
+
+  public void servindoMesa() {
+    //...?
+    System.out.println("SERVINDO A MESA");
+  }
+  public void receberPagamento() {
+    System.out.println("RECEBENDO PAGAMENTO");
+  }
+
+  //poder ser private, complemento do servindo a mesa
+  public void pegarPedidoBalcao() {
+    System.out.println("PEGANDO O PEDIDO NO BALCÃO");
+  }
+  
+}
+```
+```java
+package lanchonete;
+
+public class Cliente {
+  public void escolherLanche() {
+    System.out.println("ESCOLHENDO O LANCHE");
+  }
+  public void fazerPedido() {
+    System.out.println("FAZENDO O PEDIDO");
+  }
+  public void pagarConta() {
+    System.out.println("PAGANDO A CONTA");
+  }
+  public void pegarPedidoBalcao() {
+    System.out.println("PEGANDO O PEDIDO NO BALCÃO");
+  }
+
+  //poder ser private
+  public void consultarSaldoAplicativo() {
+    System.out.println("CONSULTANDO SALDO NO APLICATIVO");
+  }
+}
+```
+````
+📌 Para fixar
+
+Acredite! Nem tudo precisa ser visto por todos. 😉
+````
+
+### Modificador default
+
+O modificador `default`, está fortemente associado a organização das classes por pacotes ONDE algumas implementações
+não precisam estar disponíveis para todo o projeto, e este modificador de acesso, restringe a visibilidade por pacotes.
+
+Dentro do pacote `lanchonete`, iremos criar dois sub-pacotes para representar a divisão do estabelecimento.
+
+* **lanchonete.atendimento.cozinha**: Pacote que contém classes da parte da cozinha da lanchonete e atendimentos.
+* **lanchonete.area.cliente**: Pacote que contém classes relacionadas ao espaço do cliente.
+
+Após criar os pacotes, em sua IDE mova as as classes conforme imagem ilustrativa abaixo:
+
+![img](https://sintaxe.netlify.app/assets/modificadores-2.a3304398.jpeg)
+
+#### Hora de praticar a visibilidade de nossos recursos
+
+```java
+// Cozinheiro.java
+
+//ANTES
+public void lavarIngredientes() {
+   System.out.println("LAVANDO INGREDIENTES");
+}
+
+//nível de pacote
+//sem nenhuma palavra reservada de acesso
+void lavarIngredientes() {
+   System.out.println("LAVANDO INGREDIENTES");
+}
+```
+````
+🔔 Atenção
+
+Alguns erros poderão ser apresentados na sua tela, não se preocupe iremos corrigí-los.
+````
+
+### Modificador private
+
+Depois de reestruturar nosso estabelecimento (projeto), onde temos as divisões (pacotes), espaço do cliente e
+atendimento, chegou a hora de uma reflexão sobre visibilidade ou modificadores de acesso.
+
+Conhecemos as ações disponíveis nas classes `Cozinheiro, Almoxarife, Atendente e Cliente`, mesmo com a organização da
+visibilidade por pacote, será que realmente estas classes precisam ser tão explícitas?
+
+* Será que o `Cozinheiro` precisa saber que\como o `Almoxarife` controla as entradas e saídas ?
+* Que o `Cliente` precisa saber como o `Atendente` recebe o pedido para servir sua mesa ?
+* Que o `Atendente` precisa saber que antes de pagar o `Cliente` consulta o saldo no App ?
+
+Diante destes questionamentos, é que nossas classes precisam continuar mantendo suas ações (métodos), mas nem todas
+precisam ser vistas por alguém.
+
+````
+✔️ Conclusão
+
+A visibilidade de recursos da linguagem não está associada a interface gráfica, mas sim, o que as classes conseguem
+acessar umas das outras.😏
+````
+
+### Modificador protected
+
+O que precisamos compreender sobre o modificador `protected` inicialmente? Que o mesmo está fortemente relacionado a
+herança, um dos princípios disponível no conceito de P O O - Paradígma da Orientação à Objetos.
