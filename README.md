@@ -689,5 +689,133 @@ public class ConstrutorPessoa {
 ```
 > [!WARNING]
 > 🚨 Cuidado
+> 
 > Não use o recurso de construtores em excesso como forma de abreviar o algorítimo para criação e definições de seus 
 > objetos.
+
+
+## Aula 07
+### Enums
+
+Enum, é um tipo especial de classe, onde os objetos são previamente criados, imutáveis e disponíveis por toda aplicação.
+
+Usamos Enum quando o nosso modelo de negócio contém objetos de mesmo contexto, que já existem de forma pré-estabelecida
+com a certeza de não haver tanta alteração de valores.
+
+#### Exemplos:
+
+**Grau de Escolaridade**: Analfabeto, Fundamental, Médio, Superior;
+
+**Estado Civil**: Solteiro, Casado, Divorciado, Viúvo;
+
+**Estados Brasileiros**: São Paulo, Rio de Janeiro, Piauí, Maranhão.
+
+> [!WARNING]
+> 🔔 Atenção
+>
+> Não confunda uma lista de constantes com enum.
+
+Enquanto que uma constante é uma variável de tipo com valor imutável, enum é um conjunto de objetos pre-definidos na
+aplicação.
+
+Como um enum é um conjunto de objetos, logo, estes objetos podem conter atributos e métodos. Veja o exemplo de um enum
+para disponibilizar os quatro estados brasileiros citados acima, contendo informações de: Nome, Sigla e um método que
+pega o nome do de cada estado e já retorna para todo maiúsculo.
+
+```java
+// Criando o enum EstadoBrasileiro para ser usado em toda a aplicação.
+public enum EstadoBrasileiro {
+	SAO_PAULO ("SP","São Paulo"),
+	RIO_JANEIRO ("RJ", "Rio de Janeiro"),
+	PIAUI ("PI", "Piauí"),
+	MARANHAO ("MA","Maranhão") ;
+	
+	private String nome;
+	private String sigla;
+	
+	private EstadoBrasileiro(String sigla, String nome) {
+		this.sigla = sigla;
+		this.nome = nome;
+	}
+	public String getSigla() {
+		return sigla;
+	}
+	public String getNome() {
+		return nome;
+	}
+	public String getNomeMaiusculo() {
+		return nome.toUpperCase();
+	}
+	
+}
+```
+
+#### Boas práticas para criar objetos Enum
+
+* As opções (objetos), devem ser descritos em caixa alta separados por underline (_), ex.: OPCAO_UM, OPCAO_DOIS;
+* Após as opções, deve-se encerrar com ponto e vírgula ";" ;
+* Um enum é como uma classe, logo, poderá ter atributos e métodos tranquilamente;
+* Os valores dos atributos, devem já ser definidos após cada opção, dentro de parênteses como se fosse um `new`;
+* O construtor deve ser privado;
+* Não é comum um enum possuir o recurso `setter`(alteração de propriedade), somente os métodos `getters`
+correspondentes.
+
+Agora **NÃO** precisaremos criar objetos que representam cada estado, toda vez que precisarmos destas informações,
+basta usar o **enum** acima e escolher a opção (objeto), pré-definido em qualquer parte do nosso sistema.
+
+```java
+// qualquer classe do sistema poderá obter os objetos de EstadoBrasileiro
+public class SistemaIbge {
+	public static void main(String[] args) {
+		//imprimindo os estados existentes no enum
+		for(EstadoBrasileiro uf: EstadoBrasileiro.values() ) {
+		   System.out.println(uf.getSigla() + "-" + uf.getNomeMaiusculo());
+		}
+		
+		//selecionando um estado a partir das opções disponíveis
+		EstadoBrasileiro ufSelecionado = EstadoBrasileiro.PIAUI;
+		
+		System.out.println("O estado selecionado foi: " + ufSelecionado.getNome());
+	}
+}
+```
+
+#### values() e valueOf()
+
+O método `values()` retorna um array `[]` contendo todos os elementos disponíveis, logo, é possível realizar uma
+iteração for-each e obter cada elemento, veja o exemplo anteriormente.
+
+O método `valueOf(String name)` é o recurso que converte o valor literal (texto) em um elemento do enum, exemplo:
+
+```java
+public class EnumApp {
+        public static void main(String[] args) {
+            EstadoBrasileiro estadoLocalizado = EstadoBrasileiro.valueOf("RIO_JANEIRO");
+    
+            // depois de obter o estado pelo seu identificador
+            // conseguimos explorar todos os seus recursos
+            System.out.println(estadoLocalizado.getNome());
+            System.out.println(estadoLocalizado.getSigla());
+            System.out.println(estadoLocalizado.getNomeMaiusculo());
+        }
+    }
+```
+
+> [!WARNING]
+> 🚨 Cuidado
+> 
+> Java é sensível quanto ao aspecto dos literais em maiúsculo e minúsculo, veja o cenário abaixo:
+
+```java
+public class EnumApp {
+        public static void main(String[] args) {
+            //erro
+            EstadoBrasileiro estadoLocalizado = EstadoBrasileiro.valueOf("RIO JANEIRO");
+            //erro
+            EstadoBrasileiro estadoLocalizado = EstadoBrasileiro.valueOf("rio_janeiro");
+            // OK
+            EstadoBrasileiro estadoLocalizado = EstadoBrasileiro.valueOf("RIO_JANEIRO");
+        }
+    }
+```
+
